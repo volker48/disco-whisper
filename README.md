@@ -6,3 +6,7 @@
 - Create a virtualenv and install the requirements with `pip install -e .`
 - Run the bot with a command similar to the following: `CLIENT_ID=YOUR_CLIENT_ID TOKEN=$(keyring get disco-whsiper password) bot`.
 - Send a DM to the bot with an attached audio file and it will transcribe the audio and reply with text.
+
+## Example
+
+![Example](/repository/example.jpg?raw=true "Example")
