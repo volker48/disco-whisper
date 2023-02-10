@@ -9,4 +9,4 @@
 
 ## Example
 
-![Example](/repository/example.jpg?raw=true "Example")
+![Example](/example.jpg?raw=true "Example")
