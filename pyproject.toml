@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "disco-whisper"
+version = "0.0.1"
+description = "Discord bot for speech to text"
+keywords = []
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = ["discord.py~=2.1", "openai-whisper"]
+
+[project.optional-dependencies]
+dev = ["black", "isort", "flake8"]
+
+[project.scripts]
+bot = "disco_whisper.bot:main"
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+combine_star = true
+line_length = 120
+
+[tool.pyright]
+reportUnusedImport = "error"
+pythonVersion = "3.11"
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
