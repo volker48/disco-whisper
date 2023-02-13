@@ -2,8 +2,8 @@ import asyncio
 import logging
 import os
 import tempfile
-from typing import BinaryIO, cast
 from concurrent.futures import ThreadPoolExecutor
+from typing import BinaryIO, cast
 
 import aiohttp
 import discord
@@ -11,20 +11,22 @@ import whisper
 
 logger = logging.getLogger('discord')
 
-logger.info("loading whisper model")
-model = whisper.load_model("base.en")
-
 CLIENT_ID = os.getenv("CLIENT_ID")
 TOKEN = os.getenv("TOKEN")
+MODEL = os.getenv("MODEL", "base.en")
+
+logger.info("loading whisper model")
+model = whisper.load_model(MODEL)
 
 if TOKEN is None:
     raise Exception("need a token")
 
 
-class MyClient(discord.Client):
+class DiscoWhisper(discord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.executor = ThreadPoolExecutor()
+        self.session = aiohttp.ClientSession()
 
     async def on_ready(self):
         logger.info(f'Logged in as {self.user} (ID: {self.user.id})')
@@ -64,7 +66,7 @@ def main():
     intents = discord.Intents.default()
     intents.message_content = True
 
-    client = MyClient(intents=intents, application_id=CLIENT_ID, client_id=CLIENT_ID)
+    client = DiscoWhisper(intents=intents, application_id=CLIENT_ID, client_id=CLIENT_ID)
     client.run(token=TOKEN)
 
 
