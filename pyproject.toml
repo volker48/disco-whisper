@@ -3,12 +3,16 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
+dependencies = [
+	"discord.py~=2.1",
+	"jax[cpu]==0.4.5",
+	"whisper-jax @ git+https://github.com/sanchit-gandhi/whisper-jax.git@68b658ffe7bf5ab4ea01a78e3b1a9c207db3e144",
+]
 name = "disco-whisper"
-version = "0.0.1"
+version = "0.1.0"
 description = "Discord bot for speech to text"
 keywords = []
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["discord.py~=2.1", "openai-whisper"]
 
 [project.optional-dependencies]
 dev = ["black", "isort", "flake8"]
@@ -28,7 +32,7 @@ line_length = 120
 
 [tool.pyright]
 reportUnusedImport = "error"
-pythonVersion = "3.11"
+pythonVersion = "3.10"
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"

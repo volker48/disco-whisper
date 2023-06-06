@@ -4,10 +4,11 @@ import os
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from typing import BinaryIO, cast
+from whisper_jax import FlaxWhisperPipline
+import jax.numpy as jnp
 
 import aiohttp
 import discord
-import whisper
 
 logger = logging.getLogger('discord')
 
@@ -16,7 +17,8 @@ TOKEN = os.getenv("TOKEN")
 MODEL = os.getenv("MODEL", "base.en")
 
 logger.info("loading whisper model")
-model = whisper.load_model(MODEL)
+
+pipeline = FlaxWhisperPipline(f"openai/whisper-{MODEL}", dtype=jnp.bfloat16)
 
 if TOKEN is None:
     raise Exception("need a token")
@@ -46,7 +48,7 @@ class DiscoWhisper(discord.Client):
             fp = cast(BinaryIO, fp)
             await self.stream_to_file(message.attachments[0], fp)
             loop = asyncio.get_running_loop()
-            result = await loop.run_in_executor(self.executor, model.transcribe, fp.name)
+            result = await loop.run_in_executor(self.executor, pipeline, fp.name)
             translation = result.get("text")
             if not translation or not isinstance(translation, str):
                 logger.error("error during translation")
